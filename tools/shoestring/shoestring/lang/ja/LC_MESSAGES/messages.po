@@ -918,3 +918,10 @@ msgstr "ようこそ"
 msgid "wizard-welcome-upgrade"
 msgstr "アップグレード"
 
+#: shoestring/__main__.py:33
+msgid "main-init-all-help"
+msgstr "設定ファイル群を作成します"
+
+#: shoestring/__main__.py:34
+msgid "main-address-help"
+msgstr "アドレスおよびキー情報の表示と管理"

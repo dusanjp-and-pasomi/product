@@ -44,7 +44,7 @@ def build_shoestring_command(
 	shoestring_args = [
 		command_name,
 		'--config', str(Path(shoestring_directory) / 'shoestring.ini'),
-		'--directory', str(destination_directory)
+		'--directory', str(Path(destination_directory) / 'node')
 	]
 
 	if requires_ca_key_path(operation):
@@ -56,10 +56,16 @@ def build_shoestring_command(
 			'--package', package
 		])
 
+		if (Path(shoestring_directory) / 'rest_overrides.json').exists():
+			shoestring_args.extend([
+				'--rest-overrides', str(Path(shoestring_directory) / 'rest_overrides.json'),
+			])
+
 	if ShoestringOperation.SETUP == operation:
 		shoestring_args.extend(['--security', 'insecure'])
 
-		if has_custom_rest_overrides:
-			shoestring_args.extend(['--rest-overrides', str(Path(shoestring_directory) / 'rest_overrides.json')])
+	if ShoestringOperation.RENEW_CERTIFICATES == operation:
+		shoestring_args.extend(['--retain-node-key'])
 
+	print('wizardで発行される命令：', shoestring_args)
 	return shoestring_args

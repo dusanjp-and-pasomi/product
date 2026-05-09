@@ -18,7 +18,6 @@ from shoestring.internal.TransactionSerializer import write_transaction_to_file
 
 SECURITY_MODES = ('default', 'paranoid', 'insecure')
 
-
 def _resolve_hostname_and_configure_https(config, preparer):
 	def is_ip_address(hostname):
 		try:
@@ -89,12 +88,14 @@ async def run_main(args):
 		return
 
 	with Preparer(Path(args.directory), config, log) as preparer:
+
 		if is_initial_setup and preparer.directories.resources.exists():
 			log.error(_('setup-resources-directory-exists').format(directory=preparer.directories.resources))
 			sys.exit(1)
 
 		if is_initial_setup:
 			# setup basic directories
+			Path(args.directory).mkdir(parents=True, exist_ok=True)
 			preparer.create_subdirectories()
 
 		# download resource package(s) and peers file(s)
@@ -144,14 +145,18 @@ async def run_main(args):
 
 
 def add_arguments(parser, is_initial_setup=True):
-	parser.add_argument('--config', help=_('argument-help-config'), required=True)
+	parser.add_argument('--config', help=_('argument-help-config').format(default_path='shoestring.shoestring.ini'), default='shoestring/shoestring.ini')
 	parser.add_argument('--package', help=_('argument-help-setup-package'), default='mainnet')
-	parser.add_argument('--directory', help=_('argument-help-directory').format(default_path=Path.home()), default=str(Path.home()))
-	parser.add_argument('--overrides', help=_('argument-help-setup-overrides'))
-	parser.add_argument('--rest-overrides', help=_('argument-help-setup-rest-overrides'))
+	parser.add_argument('--directory', help=_('argument-help-directory').format(default_path=Path.cwd() / 'node'), default='node')
+	parser.add_argument('--overrides', help=_('argument-help-setup-overrides'), default='shoestring/overrides.ini')
+	if Path('shoestring/rest_overrides.json').exists():
+		parser.add_argument('--rest-overrides', help=_('argument-help-setup-rest-overrides'), default='shoestring/rest_overrides.json')
+	else:
+		parser.add_argument('--rest-overrides', help=_('argument-help-setup-rest-overrides'))
 
 	if is_initial_setup:
 		parser.add_argument('--security', help=_('argument-help-setup-security'), choices=SECURITY_MODES, default='default')
-		parser.add_argument('--ca-key-path', help=_('argument-help-ca-key-path'), required=True)
+		parser.add_argument('--ca-key-path', help=_('argument-help-ca-key-path').format(default_path='ca.key.pem'), default='ca.key.pem')
 		parser.add_argument('--output-transaction-only', help=_('argument-help-setup-output-transaction-only'), action='store_true')
 		parser.set_defaults(func=run_main)
+

@@ -935,3 +935,10 @@ msgstr "Welcome"
 msgid "wizard-welcome-upgrade"
 msgstr "upgrade"
 
+#: shoestring/__main__.py:33
+msgid "main-init-all-help"
+msgstr "Create a set of configuration files"
+
+#: shoestring/__main__.py:34
+msgid "main-address-help"
+msgstr "Display and manage address and key information"

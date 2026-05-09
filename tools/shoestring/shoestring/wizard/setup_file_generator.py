@@ -2,6 +2,7 @@ import logging
 import shutil
 from collections import namedtuple
 from pathlib import Path
+import json
 
 from shoestring.commands.import_bootstrap import run_main as run_import_bootstrap
 from shoestring.commands.init import run_main as run_init
@@ -33,8 +34,16 @@ def try_prepare_rest_overrides_file(screens, output_filename):
 	if 'dual' != node_type or not node_settings.metadata_info:
 		return False
 
+	add = '{"_info":"This is nodeMetaData"}'
+	print(add)
+	print(node_settings.metadata_info)
+
+	add_dict = json.loads(add)
+	metadata_info_dict = json.loads(node_settings.metadata_info)
+	combined_dict = {**add_dict, **metadata_info_dict}
+
 	with open(output_filename, 'wt', encoding='utf8') as outfile:
-		outfile.write(f'{{"nodeMetadata":{node_settings.metadata_info}}}')
+		outfile.write(json.dumps({"nodeMetadata": combined_dict}))
 
 	return True
 
