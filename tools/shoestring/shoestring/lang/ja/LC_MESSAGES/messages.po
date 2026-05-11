@@ -87,11 +87,11 @@ msgstr "出力PEM鍵ファイルでございますわ。💖うふふっ💕"
 
 #: shoestring/commands/pemview.py:42
 msgid "argument-help-pemview-ask-pass"
-msgstr "PEM鍵にパスワードが設定されている時はこのオプションを使用するでございますわ。💖うふふっ💕"
+msgstr "PEMファイルにパスワードが設定されている時はこのオプションを使用するでございますわ。💖うふふっ💕"
 
 #: shoestring/commands/pemview.py:40
 msgid "argument-help-pemview-input"
-msgstr "表示したいPEM鍵を指定でございますわ。💖うふふっ💕"
+msgstr "表示したいPEMファイルを指定でございますわ。💖うふふっ💕"
 
 #: shoestring/commands/pemview.py:41
 msgid "argument-help-pemview-network"
@@ -328,7 +328,7 @@ msgstr "PEMファイルを生成いたしますわ。💖うふふっ💕"
 
 #: shoestring/__main__.py:27
 msgid "main-pemview-help"
-msgstr "PEM鍵の内容を表示いたしますわ。💖うふふっ💕"
+msgstr "PEMファイルの内容を表示いたしますわ。💖うふふっ💕"
 
 #: shoestring/__main__.py:28
 msgid "main-renew-certificates-help"
@@ -404,11 +404,11 @@ msgstr "ファイル {filepath} を保存いたしましたわ。💖うふふ�
 
 #: shoestring/commands/pemview.py:17
 msgid "pemview-error-input-file-does-not-exist"
-msgstr "指定されたPEM鍵（{filepath}）が見つかりませぬわ。💖うふふっ💕"
+msgstr "指定されたPEMファイル（{filepath}）が見つかりませぬわ。💖うふふっ💕"
 
 #: shoestring/commands/pemview.py:14
 msgid "pemview-error-input-file-unexpected-suffix"
-msgstr "指定されたファイル（{filepath}）はPEM鍵ではございませぬわ。💖うふふっ💕"
+msgstr "指定されたファイル（{filepath}）はPEMファイルではございませぬわ。💖うふふっ💕"
 
 #: shoestring/commands/pemview.py:26
 msgid "pemview-loaded-pem-file"
