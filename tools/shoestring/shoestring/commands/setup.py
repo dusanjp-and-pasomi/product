@@ -18,6 +18,7 @@ from shoestring.internal.TransactionSerializer import write_transaction_to_file
 
 SECURITY_MODES = ('default', 'paranoid', 'insecure')
 
+
 def _resolve_hostname_and_configure_https(config, preparer):
 	def is_ip_address(hostname):
 		try:
@@ -74,6 +75,25 @@ async def _prepare_linking_transaction(preparer, api_endpoint):
 
 
 async def run_main(args):
+	# ====================== --package の自動判定 ======================
+	if not args.package or args.package == 'n/a':  # argparseのdefaultをNoneや未設定にしておく
+		try:
+			config = parse_shoestring_configuration(args.config)
+			network_name = getattr(config.network, 'name', 'mainnet').lower()
+
+			if network_name in ('testnet', 'sai'):
+				args.package = 'sai'
+				log.info('configファイルから testnet を検出 → --package sai を適用')
+			else:
+				args.package = 'mainnet'
+				log.info('configファイルから mainnet を検出 → --package mainnet を適用')
+		except Exception as e:
+			args.package = 'mainnet'
+			log.warning(f'config読み込み失敗のため mainnet を使用します: {e}')
+	else:
+		log.info(f'コマンドラインで指定された --package {args.package} を使用します')
+	# ================================================================
+
 	config = parse_shoestring_configuration(args.config)
 	is_initial_setup = hasattr(args, 'security')
 
@@ -146,7 +166,7 @@ async def run_main(args):
 
 def add_arguments(parser, is_initial_setup=True):
 	parser.add_argument('--config', help=_('argument-help-config').format(default_path='shoestring.shoestring.ini'), default='shoestring/shoestring.ini')
-	parser.add_argument('--package', help=_('argument-help-setup-package'), default='mainnet')
+	parser.add_argument('--package', help=_('argument-help-setup-package'))
 	parser.add_argument('--directory', help=_('argument-help-directory').format(default_path=Path.cwd() / 'node'), default='node')
 	parser.add_argument('--overrides', help=_('argument-help-setup-overrides'), default='shoestring/overrides.ini')
 	if Path('shoestring/rest_overrides.json').exists():
