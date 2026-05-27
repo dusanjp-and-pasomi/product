@@ -53,7 +53,7 @@ def build_shoestring_command(
 	if operation in (ShoestringOperation.SETUP, ShoestringOperation.UPGRADE):
 		shoestring_args.extend([
 			'--overrides', str(Path(shoestring_directory) / 'overrides.ini'),
-			'--package', package
+			
 		])
 
 		if (Path(shoestring_directory) / 'rest_overrides.json').exists():

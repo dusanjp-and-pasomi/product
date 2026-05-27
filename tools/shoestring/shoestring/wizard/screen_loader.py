@@ -36,7 +36,7 @@ def lookup_screens_list_for_operation(operation):
 		ShoestringOperation.SETUP:
 			['welcome', 'root-check', 'obligatory', 'network-type', 'node-type',
 				'harvesting', 'voting', 'node-settings', 'certificates', 'end-screen'],
-		ShoestringOperation.UPGRADE: ['welcome', 'obligatory', 'network-type', 'end-screen'],
+		ShoestringOperation.UPGRADE: ['welcome', 'obligatory', 'end-screen'],
 		ShoestringOperation.RESET_DATA: ['welcome', 'obligatory', 'end-screen'],
 		ShoestringOperation.RENEW_CERTIFICATES: ['welcome', 'obligatory', 'end-screen'],
 		ShoestringOperation.RENEW_VOTING_KEYS: ['welcome', 'obligatory', 'end-screen'],

@@ -23,6 +23,27 @@ async def dispatch_shoestring_command(screens, executor):
 
 	operation = screens.get('welcome').operation
 	package = screens.get('network-type').current_value
+	
+	#==========network-typeを自動判別==========
+	if ShoestringOperation.UPGRADE == operation:
+		# 既存のshoestring.iniからnetworkを自動判別
+		config_path = shoestring_directory / 'shoestring.ini'
+		if not config_path.exists():
+			# エラー処理（必要に応じて）
+			raise FileNotFoundError(f"shoestring.ini not found at {config_path}")
+
+		from shoestring.internal.ShoestringConfiguration import parse_shoestring_configuration
+		config = parse_shoestring_configuration(config_path)
+		package = config.network.name  # または config.network.get('name', 'mainnet')
+		if package == "testnet":
+			package = "sai"
+		# === デバッグ用出力（ここを追加）===
+		print(f"[DEBUG] UPGRADE mode: Detected network from shoestring.ini -> package = '{package}'")
+		print(f"[DEBUG] Config path: {config_path}")
+		# ===================================
+	else:
+		package = screens.get('network-type').current_value
+	# ==================
 
 	if ShoestringOperation.SETUP == operation:
 		with tempfile.TemporaryDirectory() as temp_directory:
@@ -62,7 +83,7 @@ async def dispatch_shoestring_command(screens, executor):
 		if ShoestringOperation.UPGRADE == operation:
 			with tempfile.TemporaryDirectory() as temp_directory:
 				config_filepath = Path(temp_directory) / 'shoestring.ini'
-				await prepare_shoestring_config(screens.get('network-type').current_value, config_filepath)
+				await prepare_shoestring_config(package, config_filepath)  # ← ここで自動取得したpackageを使う
 				patch_shoestring_config(shoestring_directory / 'shoestring.ini', config_filepath)
 
 		shoestring_args = build_shoestring_command(
